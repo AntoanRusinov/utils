@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import utility.service.FileMergerService;
 
 import java.io.IOException;
+import java.util.Scanner;
 
 @SpringBootApplication
 @RequiredArgsConstructor
@@ -22,9 +23,14 @@ public class UtilityApplication implements CommandLineRunner {
     @Override
     public void run(String... args) throws IOException {
 
-        fileMergerService.mergeFiles("C:\\Users\\35989\\Desktop\\DCIM");
-        System.out.println("Files merged successfully.");
+        //Desktop dir with name "DCIM" expected
+        var sourcePath = "C:\\Users\\35989\\Desktop\\DCIM";
 
+        System.out.println("Please, enter phone from which you are backing up files: ");
+        var phoneName = new Scanner(System.in).next();
+
+        fileMergerService.mergeFiles(sourcePath, phoneName);
+        System.exit(0);
     }
 
 }
