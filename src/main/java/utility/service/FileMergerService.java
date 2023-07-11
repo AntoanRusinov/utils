@@ -10,29 +10,22 @@ import java.time.LocalDate;
 @Service
 public class FileMergerService {
 
-    public void mergeFiles(String sourcePath, String phoneName) throws IOException {
+    public void mergeFiles(String sourcePath, String folderName) throws IOException {
         String userHome = System.getProperty("user.home");
         Path desktopPath = Paths.get(userHome, "Desktop");
-        Path mergedFilesDirectory = desktopPath.resolve("Backup phone " + phoneName + " - " + LocalDate.now());
+        Path mergedFilesDirectory = desktopPath.resolve(folderName + " - " + LocalDate.now());
         Files.createDirectories(mergedFilesDirectory);
 
         Files.walkFileTree(Paths.get(sourcePath), new SimpleFileVisitor<>() {
             @Override
             public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
                 if (!attrs.isDirectory()) {
-                    Path targetPath = mergedFilesDirectory.resolve(file.getFileName());
-                    Files.copy(file, targetPath, StandardCopyOption.REPLACE_EXISTING);
-                }
-                return FileVisitResult.CONTINUE;
-            }
-        });
-
-        // Delete ".AAE" files
-        Files.walkFileTree(mergedFilesDirectory, new SimpleFileVisitor<>() {
-            @Override
-            public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
-                if (!attrs.isDirectory() && file.getFileName().toString().endsWith(".AAE")) {
-                    Files.delete(file);
+                    var fileName = file.getFileName().toString();
+                    // Exclude files with extension .AAE and .png
+                    if (!(fileName.endsWith(".AAE") || fileName.endsWith(".png"))) {
+                        Path targetPath = mergedFilesDirectory.resolve(file.getFileName());
+                        Files.copy(file, targetPath, StandardCopyOption.REPLACE_EXISTING);
+                    }
                 }
                 return FileVisitResult.CONTINUE;
             }
@@ -40,4 +33,5 @@ public class FileMergerService {
 
         System.out.println("Files merged successfully. They are on your desktop in a folder with name \"" + mergedFilesDirectory.getFileName() + "\"");
     }
+
 }

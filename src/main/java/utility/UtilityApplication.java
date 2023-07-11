@@ -26,10 +26,10 @@ public class UtilityApplication implements CommandLineRunner {
         //Desktop dir with name "DCIM" expected
         var sourcePath = "C:\\Users\\35989\\Desktop\\DCIM";
 
-        System.out.println("Please, enter phone from which you are backing up files: ");
-        var phoneName = new Scanner(System.in).next();
+        System.out.println("Please, enter backup folder name. It should be without spaces: ");
+        var folderName = new Scanner(System.in).next();
 
-        fileMergerService.mergeFiles(sourcePath, phoneName);
+        fileMergerService.mergeFiles(sourcePath, folderName);
         System.exit(0);
     }
 
