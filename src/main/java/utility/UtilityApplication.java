@@ -19,7 +19,6 @@ public class UtilityApplication implements CommandLineRunner {
         SpringApplication.run(UtilityApplication.class, args);
     }
 
-
     @Override
     public void run(String... args) throws IOException {
 
